@@ -1,0 +1,1 @@
+- [Zod codegen compatibility](zod-codegen-compatibility.md) — check the resolved Zod version after Orval codegen; integer helpers can target a newer API.

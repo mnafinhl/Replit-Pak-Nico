@@ -1,0 +1,60 @@
+Build a complete, functional full-stack web application using PHP, HTML5, CSS3, minimal JavaScript, and a MariaDB/MySQL database.
+
+---
+
+### 1. Database & Multi-User Setup (SQL)
+Create a database named `linux_repo` and generate the SQL scripts for two tables:
+
+1. `users` Table:
+   - `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+   - `username` (VARCHAR(50), UNIQUE)
+   - `password` (VARCHAR(255) - hashed using PHP `password_hash()`)
+   - `role` (ENUM('admin', 'user'))
+   - **Seed Data:** 
+     - Admin Account: username `admin`, password `admin123`, role `admin`
+     - Regular User Account: username `user`, password `user123`, role `user`
+
+2. `distros` Table:
+   - `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+   - `name` (VARCHAR(100))
+   - `base` (VARCHAR(100))
+   - `kernel` (VARCHAR(100))
+   - `status` (ENUM('Development', 'Active', 'Legacy'), default 'Active')
+   - `image` (VARCHAR(255), NULLABLE)
+   - `notes` (TEXT)
+   - `created_at` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+   - **Seed Data:** Populate with 3-5 sample Linux distro entries.
+
+---
+
+### 2. Authentication & Access Control (RBAC)
+- **Login System (`login.php`):** Authenticate users using `password_verify()`. Protect all pages from unauthorized direct access.
+- **Admin Role:** Full permissions to View, Create, Edit, and Delete distros along with image uploads.
+- **User Role:** Read-Only access. Can view the main list (`index.php`). Hide all 'Add New', 'Edit', and 'Delete' buttons from the UI and block backend execution for non-admins.
+- **Session Management:** Secure PHP sessions with a working `logout.php`.
+
+---
+
+### 3. CRUD & Image Upload Functionality
+- Store uploaded images in an `uploads/` directory.
+- Allow image formats: `.jpg`, `.jpeg`, `.png`, `.webp` (max file size: 2MB).
+- Generate unique filenames (e.g., using `uniqid()`) upon upload.
+- **Create (`add_distro.php`):** Include `<input type="file" name="image" accept="image/*">` with `enctype="multipart/form-data"`. Save the image file to `uploads/` and its filename to the database.
+- **Read (`index.php`):** Display the image on each distro card. Show a sleek Linux-themed fallback icon if no image is uploaded.
+- **Update (`edit_distro.php`):** Allow uploading a replacement image. Automatically delete the old image file from `uploads/` when replaced.
+- **Delete (`delete_distro.php`):** Automatically delete the associated image file from disk when a record is deleted.
+
+---
+
+### 4. Design & Visual Theme (CachyOS / Linux Desktop Aesthetic)
+- **Background:** Deep space star-field pattern with cool cyan and deep-blue glowing swirls inspired by the CachyOS desktop layout.
+- **Top Desktop Bar (Header):** Dark semi-transparent (glassmorphism) panel featuring a launcher icon on the left, navigation in the center, and live status, clock, logged-in user info (`Logged in as: username [ROLE]`), and Logout button on the right.
+- **Cards & Controls:** 
+  - Render distro items inside dark widget cards with glowing cyan borders (`box-shadow: 0 0 10px rgba(0, 191, 255, 0.4)`).
+  - Style image previews with rounded corners and subtle dark overlays.
+  - Style forms, text inputs, and file upload buttons to resemble Linux terminal/system dialog controls.
+
+---
+
+### 5. Expected Output
+Provide the modular PHP file structure (`db_config.php`, `auth_check.php`, `login.php`, `logout.php`, `index.php`, `add_distro.php`, `edit_distro.php`, `delete_distro.php`), custom CSS stylesheet, and SQL setup scripts.

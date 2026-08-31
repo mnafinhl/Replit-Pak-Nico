@@ -1,6 +1,6 @@
-# [Project name]
+# Linux Distro Repository
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An authenticated repository for browsing and maintaining Linux distribution records, with a CachyOS-inspired operator interface.
 
 ## Run & Operate
 
@@ -10,6 +10,7 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
 - Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `SESSION_SECRET` — signs repository session cookies
 
 ## Stack
 
@@ -22,19 +23,29 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/linux-distro-repository/` — Vite frontend, shell, login, repository, and admin editor screens
+- `artifacts/api-server/src/routes/` — health, authentication, distro CRUD, and repository summary endpoints
+- `artifacts/api-server/src/lib/session.ts` — signed HttpOnly session cookies and password verification
+- `lib/db/src/schema/` — users and distro tables
+- `lib/api-spec/openapi.yaml` — source-of-truth API contract
+- `artifacts/linux-distro-repository/src/index.css` — deep-space/cyan visual theme
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The app uses the workspace's managed PostgreSQL database and Drizzle schema rather than introducing a second database service.
+- Admin and read-only roles are enforced in both the UI and API; UI hiding is not treated as authorization.
+- Sessions are signed, HttpOnly cookies backed by an in-memory session map for the preview runtime.
+- User-uploaded images are validated client-side and persisted as image references/data URLs in the distro record.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Sign in as `admin` or `user`, browse seeded Linux distro records, search/filter by status, inspect repository health, and view recent additions.
+- Admins can register, edit, delete, and attach optional JPG/PNG/WEBP imagery up to 2 MB.
+- Regular users receive a read-only repository view and backend mutations are rejected with 403.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- The requested experience is Linux desktop-inspired with dark glass panels, deep-space atmosphere, cyan glow, and terminal-like controls.
 
 ## Gotchas
 
